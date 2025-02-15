@@ -1,0 +1,14 @@
+# backend/theblucks-mail-3cb66286c8da.json
+**/.env
+__pycache__/
+**/.DS_Store
+
+venv/
+.env/
+.venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+/backend/*

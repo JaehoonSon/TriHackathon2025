@@ -1,0 +1,28 @@
+FROM --platform=linux/amd64 python:3.9-slim
+
+# Install system dependencies including FFmpeg and extra codecs
+RUN apt-get update && apt-get install -y ffmpeg libavcodec-extra && rm -rf /var/lib/apt/lists/*
+
+# Ensure FFmpeg has execution permissions
+RUN chmod +x /usr/bin/ffmpeg
+
+# Create a non-root user
+RUN useradd -m appuser
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt gunicorn
+
+# Copy the entire project into /app, flattening the structure
+COPY ./app/ /app/
+
+# Ensure permissions
+RUN chown -R appuser:appuser /app
+USER appuser
+
+# Set PYTHONPATH so that /app is on the path (modules are in /app)
+ENV PYTHONPATH=/app
+
+# Start Gunicorn; note that the application entry point is now "api:app"
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "0", "api:app"]

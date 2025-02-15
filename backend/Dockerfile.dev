@@ -1,0 +1,19 @@
+FROM python:3.9.6
+
+RUN apt-get update && apt-get install -y ffmpeg
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+WORKDIR /app
+COPY app app/
+
+EXPOSE 5001
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+ENV FLASK_APP=api
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=5001
+
+CMD ["flask", "--app", "api", "run", "--host=0.0.0.0", "--port=5001"]

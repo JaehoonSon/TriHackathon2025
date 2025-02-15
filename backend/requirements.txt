@@ -1,0 +1,12 @@
+Flask
+Flask-Cors
+google-generativeai
+google-cloud-storage
+werkzeug
+ffmpeg-python
+python-dotenv
+google-auth>=2.0.0
+pyjwt
+google-cloud-firestore
+flask-jwt-extended
+gunicorn==20.1.0
